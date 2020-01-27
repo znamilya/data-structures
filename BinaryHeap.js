@@ -1,7 +1,10 @@
 class BinaryHeap {
   constructor(options) {
+    let defaultExtractValue = n => n;
+
     this.cmpParentChild = options.cmpParentChild;
     this.cmpSiblings = options.cmpSiblings;
+    this.extractValue = options.extractValue || defaultExtractValue;
     this.values = [];
   }
 
@@ -36,7 +39,7 @@ class BinaryHeap {
     let parentValue = this.getMaybe(parentIndex);
 
     while (parentValue) {
-      if (this.cmpParentChild(parentValue, value)) {
+      if (this.cmpParentChild(this.extractValue(parentValue), this.extractValue(value))) {
         this.swap(index, parentIndex);
 
         index = parentIndex;
@@ -65,7 +68,7 @@ class BinaryHeap {
     let rightValue = this.getMaybe(rightIndex);
 
     while (leftValue || rightValue) {
-      if (!rightValue || this.cmpSiblings(leftValue, rightValue)) {
+      if (!rightValue || this.cmpSiblings(this.extractValue(leftValue), this.extractValue(rightValue))) {
         this.swap(parentIndex, leftIndex);
 
         parentIndex = leftIndex;
@@ -90,6 +93,7 @@ class MaxBinaryHeap extends BinaryHeap {
     super({
       cmpParentChild: (a, b) => a < b,
       cmpSiblings: (a, b) => a > b,
+      extractValue: options.extractValue,
     });
   }
 
@@ -103,10 +107,11 @@ class MaxBinaryHeap extends BinaryHeap {
 }
 
 class MinBinaryHeap extends BinaryHeap {
-  constructor() {
+  constructor(options) {
     super({
       cmpParentChild: (a, b) => a > b,
       cmpSiblings: (a, b) => a < b,
+      extractValue: options.extractValue,
     });
   }
 
