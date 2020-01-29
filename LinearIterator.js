@@ -1,15 +1,18 @@
 class LinearIterator {
-  constructor(node) {
-    this.node = node;
+  constructor(node, withIndex) {
+    this._node = node;
+    this._index = 0;
+    this._withIndex = withIndex;
   }
 
   next() {
     let result = { value: undefined, done: true };
 
-    if (this.node) {
-      result.value = this.node.value;
+    if (this._node) {
+      result.value = this._withIndex ? [this._node.value, this._index] : this._node.value;
       result.done = false;
-      this.node = this.node.next;
+      this._node = this._node.next;
+      this._index += 1;
     }
 
     return result;
