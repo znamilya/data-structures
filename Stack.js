@@ -10,6 +10,10 @@ class Stack {
     this.clear();
   }
 
+  [Symbol.iterator]() {
+    return new LinearIterator(this.top);
+  }
+
   clear() {
     this.top = null;
     this.bottom = null;
@@ -58,23 +62,7 @@ class Stack {
     this.size += 1;
   }
 
-  iterate(fn) {
-    let node = this.top;
-
-    while (node) {
-      if (fn(node.value) === false) {
-        break;
-      }
-
-      node = node.next;
-    }
-  }
-
-  toString() {
-    let res = [];
-
-    this.iterate(v => res.push(v));
-
-    return res;
+  toArray() {
+    return [...this];
   }
 }
