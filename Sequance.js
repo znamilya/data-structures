@@ -40,6 +40,8 @@ class Sequance {
    * @param {number} index
    */
   get(index) {
+    if (index >= this.size) return null;
+
     let iter = this._getIterator(true);
     let next = iter.next();
 
