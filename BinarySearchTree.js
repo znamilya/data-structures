@@ -1,65 +1,65 @@
 class Node {
-    constructor(value) {
-        this.value = value;
-        this.left = null;
-        this.right = null;
-    }
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
 }
 
 class BinarySearchTree {
-    constructor() {
-        this.root = null;
+  constructor() {
+    this.root = null;
+  }
+
+  _insert(parentNode, childNode) {
+    if (!parentNode) {
+      return childNode;
     }
 
-    _insert(parentNode, childNode) {
-        if (!parentNode) {
-            return childNode;
-        }
-
-        if (childNode.value > parentNode.value) {
-            parentNode.right = this._insert(parentNode.right, childNode);
-        }
-
-        if (childNode.value < parentNode.value) {
-            parentNode.left = this._insert(parentNode.left, childNode);
-        }
-
-        return parentNode;
+    if (childNode.value > parentNode.value) {
+      parentNode.right = this._insert(parentNode.right, childNode);
     }
 
-    insert(value) {
-        const node = new Node(value);
-
-        this.root = this._insert(this.root, node);
+    if (childNode.value < parentNode.value) {
+      parentNode.left = this._insert(parentNode.left, childNode);
     }
 
-    _lookup(node, value) {
-        if (!node) return;
+    return parentNode;
+  }
 
-        if (node.value === value) {
-            return node;
-        }
+  insert(value) {
+    const node = new Node(value);
 
-        if (value < node.value) {
-            return this._lookup(node.left, value);
-        }
+    this.root = this._insert(this.root, node);
+  }
 
-        if (value > node.value) {
-            return this._lookup(node.right, value);
-        }
+  _lookup(node, value) {
+    if (!node) return null;
+
+    if (node.value === value) {
+      return node;
     }
 
-    lookup(value) {
-        return this._lookup(this.root, value);
+    if (value < node.value) {
+      return this._lookup(node.left, value);
     }
 
-    _height(node) {
-        if (!node) return 0;
-
-        return 1 + Math.max(this._height(node.left), this._height(node.right));
+    if (value > node.value) {
+      return this._lookup(node.right, value);
     }
+  }
 
-    height() {
-        return this._height(this.root);
-    }
+  lookup(value) {
+    return this._lookup(this.root, value);
+  }
+
+  _height(node) {
+    if (!node) return 0;
+
+    return 1 + Math.max(this._height(node.left), this._height(node.right));
+  }
+
+  height() {
+    return this._height(this.root);
+  }
 }
